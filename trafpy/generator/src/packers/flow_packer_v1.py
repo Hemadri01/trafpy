@@ -207,10 +207,21 @@ class FlowPackerV1(FlowPacker):
 
         pairs = np.asarray(list(self.pair_current_distance_from_target_info_dict.keys()))
         for flow in self.packed_flows.keys():
+
+            #DEBUG
+            print(1)
+            print(flow)
+            #DEBUG
+
             if self.print_data:
                 print('\nPacking flow {} of size {}'.format(flow, self.packed_flows[flow]['size']))
 
             pairs = self._prepare_pairs_for_packing_a_flow(pairs)
+
+            #DEBUG
+            print(2)
+            print(pairs)
+            #DEBUG
 
             if self.print_data:
                 print('Current distance from target info:\n{}'.format(pairs))
@@ -219,9 +230,24 @@ class FlowPackerV1(FlowPacker):
             # first pass (try not to exceed target pair load)
             chosen_pair = self._perform_first_pass(flow, pairs)
 
+            #DEBUG
+            print(3)
+            print(chosen_pair)
+            #DEBUG
+
+            #DEBUG
+            print(4)
+            print(self.pair_current_distance_from_target_info_dict)
+            #DEBUG
+
             if chosen_pair is None:
                 # second pass (if can't avoid exceeding any pair's target load, pack into pair without exceeding max total load)
                 chosen_pair = self._perform_second_pass(flow, pairs)
+
+                #DEBUG
+                #print(5)
+                #print(chosen_pair)
+                #DEBUG
 
             if chosen_pair is None:
                 # could not find end point pair with enough capacity to take flow
@@ -230,8 +256,18 @@ class FlowPackerV1(FlowPacker):
             if self.print_data:
                 print('Assigning flow to pair {}'.format(chosen_pair))
 
+            #DEBUG
+            print(5)
+            print(self.pair_current_distance_from_target_info_dict)
+            #DEBUG
+
             # pack flow into this pair
             self._pack_flow_into_chosen_pair(flow, chosen_pair)
+
+            #DEBUG
+            print(6)
+            print(self)
+            #DEBUG
 
             # # DEBUG
             # if self.pair_current_distance_from_target_info_dict[chosen_pair] < 0:

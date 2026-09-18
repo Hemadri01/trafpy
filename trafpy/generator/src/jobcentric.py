@@ -36,9 +36,11 @@ class JobGenerator:
                  min_last_demand_arrival_time=None,
                  auto_node_dist_correction=False,
                  check_dont_exceed_one_ep_load=True,
+                 #Trying v1
+                 #flow_packer_cls='trafpy.generator.src.packers.flow_packer_v1.FlowPackerV1',
                  flow_packer_cls='trafpy.generator.src.packers.flow_packer_v2.FlowPackerV2',
                  flow_packer_kwargs=None,
-                 print_data=False,
+                 print_data=False, #hsd
                  **kwargs):
         '''
         Args:

@@ -46,10 +46,10 @@ def get_network_params(eps, all_combinations=False):
     num_nodes = len(eps)
     if all_combinations:
         # assuming src-dst not equivalent to dst-src
-        num_pairs = np.int(((num_nodes**2) - num_nodes))
+        num_pairs = int(((num_nodes**2) - num_nodes))
     else:
         # assuming src-dst==dst-src
-        num_pairs = np.int(((num_nodes**2) - num_nodes)/2)
+        num_pairs = int(((num_nodes**2) - num_nodes)/2)
     node_indices = [index for index in range(num_nodes)]
     iterables = zip(eps, node_indices)
     node_to_index = {node: index for node, index in iterables}

@@ -19,10 +19,10 @@ import matplotlib
 import matplotlib.pyplot as plt
 
 import os
-import torch
-if torch.cuda.is_available():
-    if 'CUDA_VISIBLE_DEVICES' in os.environ:
-        os.environ['CUDA_VISIBLE_DEVICES'] = str(get_least_used_gpu())
+#import torch
+#if torch.cuda.is_available():
+#    if 'CUDA_VISIBLE_DEVICES' in os.environ:
+#        os.environ['CUDA_VISIBLE_DEVICES'] = str(get_least_used_gpu())
 
 from typing import Union
 
@@ -41,7 +41,7 @@ class FlowPackerV2(FlowPacker):
                  network_load_config,
                  auto_node_dist_correction=False,
                  check_dont_exceed_one_ep_load=True,
-                 print_data=False):
+                 print_data=False): #hsd
         FlowPacker.__init__(
                     self,
                     generator=generator,
@@ -119,6 +119,10 @@ class FlowPackerV2(FlowPacker):
             self.pair_to_idx[pair] = pair_idx
         self.pair_to_remaining_capacity = np.array(self.pair_to_remaining_capacity)
 
+        #DEBUG
+        #print("DEBUG 0") #hsd
+        #print(self.pair_to_remaining_capacity)
+
         if self.print_data:
             print('Duration: {}'.format(self.duration))
             print('Pair prob sum: {}'.format(np.sum(self.pair_probs)))
@@ -182,12 +186,29 @@ class FlowPackerV2(FlowPacker):
         return shuffled_packed_flows
 
     def _choose_pair(self, flow):
+
+        ##DEBUG
+        #print("DEBUG")
+        #print(self)
+        #print(flow)
+        #print(self.check_dont_exceed_one_ep_load)
+        ##DEBUG
+
         if self.check_dont_exceed_one_ep_load:
             # mask out pairs whose src and/or dst would exceed 1.0 load rate were they to be allocated this flow
             pairs_mask = np.where(self.pair_to_remaining_capacity - self.packed_flows[flow]['size'] < 0, 0, 1)
             candidate_pairs = self._get_masked_data(data=self.pairs, mask=pairs_mask)
             # get the candidate pair distances adjusted for their total target information, as this will determine packing priority to accurately reproduce the distribution. Need to shift this by the target total info to retain the target dist shape rather than converge to uniform as soon as reach target on a given end point
             adjusted_candidate_pair_distances = self._get_masked_data(data=self.pair_current_distance_from_target_info + self.pair_target_total_info, mask=pairs_mask)
+
+            ##DEBUG
+            #print("DEBUG")
+            #print(pairs_mask)
+            #print(candidate_pairs)
+            #print(adjusted_candidate_pair_distances)
+            ##DEBUG
+
+
         else:
             # no need to worry about exceeding 1.0 load rate
             candidate_pairs = self.pairs

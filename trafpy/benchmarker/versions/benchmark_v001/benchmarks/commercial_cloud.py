@@ -18,7 +18,7 @@ class DefaultBenchmark(Benchmark):
             if racks_dict is None:
                 rack_prob_config = None
             else:
-                rack_prob_config = {'racks_dict': racks_dict, 'prob_inter_rack': 0.2}
+                rack_prob_config = {'racks_dict': racks_dict, 'prob_inter_rack': 1.0}    # Change -> 0.2
             dist = node_dists.gen_multimodal_node_dist(eps, 
                                                             rack_prob_config=rack_prob_config, 
                                                             num_skewed_nodes=num_skewed_nodes, 

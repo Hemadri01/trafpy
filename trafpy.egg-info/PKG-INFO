@@ -1,11 +1,13 @@
-Metadata-Version: 1.2
+Metadata-Version: 2.4
 Name: trafpy
 Version: 0.0.1
 Summary: Network Traffic Generator
-Home-page: UNKNOWN
 Author: Christopher W. F. Parsonson
 Author-email: cwfparsonson@gmail.com
-License: UNKNOWN
-Description: UNKNOWN
-Platform: UNKNOWN
 Requires-Python: >=3.7
+License-File: LICENSE
+Dynamic: author
+Dynamic: author-email
+Dynamic: license-file
+Dynamic: requires-python
+Dynamic: summary

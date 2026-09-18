@@ -16,8 +16,10 @@ from statsmodels.distributions.empirical_distribution import ECDF
 from scipy import stats
 from scipy import interpolate
 import networkx as nx
-from nxviz.plots import CircosPlot
+#from nxviz.plots import CircosPlot
 import json
+#Patch
+import nxviz as nv
 
 # import warnings # for catching warnings rather than just exceptions
 # warnings.filterwarnings('error')
@@ -301,16 +303,40 @@ def plot_node_dist(node_dist,
 
             plt.set_cmap('YlOrBr')
             plt.style.use('default')
-            chord_diagram = CircosPlot(graph2, 
-                                       node_labels=True,
-                                       edge_width='weight',
-                                       figsize=figsize,
-                                       # edge_color='weight',
-                                       # node_size='load',
-                                       node_grouping='load',
-                                       node_color='load')
-            chord_diagram.draw()
-            figs.append(chord_diagram)
+
+
+            #Trying a nxviz patch (Hemadri01)
+
+            #chord_diagram = CircosPlot(graph2, 
+            #                           node_labels=True,
+            #                           edge_width='weight',
+            #                           figsize=figsize,
+            #                           # edge_color='weight',
+            #                           # node_size='load',
+            #                           node_grouping='load',
+            #                           node_color='load')
+            #chord_diagram.draw()
+            #figs.append(chord_diagram)
+
+
+            #Patch
+
+            import nxviz as nv
+
+            fig, ax = plt.subplots(figsize=figsize)
+
+            ax = nv.circos(
+                graph2,
+                group_by="load",          # replaces node_grouping
+                node_color_by="load"     # replaces node_color   # correct keyword!
+            )
+
+            # Optional: add labels & group annotations
+            #nv.annotate.circos_group(graph2, group_by="load")
+            #nv.annotate.circos_labels(graph2, sort_by="load")
+
+            figs.append(fig)
+
         else:
             # do not plot chord
             pass
